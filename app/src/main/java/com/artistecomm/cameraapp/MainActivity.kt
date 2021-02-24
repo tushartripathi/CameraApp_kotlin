@@ -13,6 +13,7 @@ import androidx.annotation.RequiresApi
 import androidx.core.app.ActivityCompat
 import com.artistecomm.Image.Colorful
 import com.artistecomm.Image.SaveImage
+import com.artistecomm.Image.ShareImage
 import com.artistecomm.SytemTask.Permission
 import java.security.AccessController.getContext
 
@@ -21,6 +22,8 @@ class MainActivity : AppCompatActivity() , View.OnClickListener
 
     lateinit var colourful: Colorful
 
+
+    private lateinit var shareBtn: Button
     private lateinit var takeImageBtn: Button
     private lateinit var saveImageBtn: Button
     private lateinit var imageView: ImageView
@@ -37,6 +40,7 @@ class MainActivity : AppCompatActivity() , View.OnClickListener
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        shareBtn = findViewById(R.id.ShareBtn)
         takeImageBtn = findViewById(R.id.buttonTakeIamge)
         saveImageBtn = findViewById(R.id.buttonSaveTheGallery)
         imageView = findViewById(R.id.imageView)
@@ -48,10 +52,12 @@ class MainActivity : AppCompatActivity() , View.OnClickListener
         blueText = findViewById(R.id.textView3)
         takeImageBtn.setOnClickListener(this)
         saveImageBtn.setOnClickListener(this)
-        var customizeHandler: CustomizeHandler = CustomizeHandler()
+        shareBtn.setOnClickListener(this)
+        var customizeHandler = CustomizeHandler()
         redSeek.setOnSeekBarChangeListener(customizeHandler)
         greenSeek.setOnSeekBarChangeListener(customizeHandler)
         blueSeek.setOnSeekBarChangeListener(customizeHandler)
+
 
     }
 
@@ -77,6 +83,11 @@ class MainActivity : AppCompatActivity() , View.OnClickListener
                 {
                     Toast.makeText(this,"Error = "+e.message,Toast.LENGTH_SHORT).show()
                 }
+            } else if(view.getId() == R.id.ShareBtn)
+            {
+                Toast.makeText(this,"Working..",Toast.LENGTH_SHORT).show()
+                ShareImage.shareFile(this,bitmap)
+                Toast.makeText(this,"Working..",Toast.LENGTH_SHORT).show()
             }
     }
 
