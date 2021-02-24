@@ -12,10 +12,12 @@ import android.widget.*
 import androidx.annotation.RequiresApi
 import androidx.core.app.ActivityCompat
 import com.artistecomm.Image.Colorful
+import com.artistecomm.Image.SaveImage
 import com.artistecomm.SytemTask.Permission
 import java.security.AccessController.getContext
 
-class MainActivity : AppCompatActivity() , View.OnClickListener {
+class MainActivity : AppCompatActivity() , View.OnClickListener
+{
 
     lateinit var colourful: Colorful
 
@@ -29,6 +31,7 @@ class MainActivity : AppCompatActivity() , View.OnClickListener {
     private lateinit var greenText: TextView
     private lateinit var blueText: TextView
 
+    private lateinit var bitmap: Bitmap
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -63,6 +66,17 @@ class MainActivity : AppCompatActivity() , View.OnClickListener {
                     Toast.makeText(this, "No Camera", Toast.LENGTH_SHORT).show()
             } else if (view.getId() == R.id.buttonSaveTheGallery) {
 
+                //if(Permission.getStoragePermission(this))
+                Permission.getStoragePermission(this)
+                try {
+
+                        SaveImage.saveFile(this,bitmap)
+                    Toast.makeText(this,"Saved",Toast.LENGTH_SHORT).show()
+                }
+                catch( e:Exception)
+                {
+                    Toast.makeText(this,"Error = "+e.message,Toast.LENGTH_SHORT).show()
+                }
             }
     }
 
@@ -72,7 +86,7 @@ class MainActivity : AppCompatActivity() , View.OnClickListener {
         Toast.makeText(this, "Got result", Toast.LENGTH_SHORT).show()
         if (requestCode == 1000 && resultCode == RESULT_OK) {
             var bundle = data?.getExtras()
-            var bitmap: Bitmap = bundle?.get("data") as Bitmap
+            bitmap = bundle?.get("data") as Bitmap
             colourful = Colorful(bitmap, 0.0f, 0.0f, 0.0f)
 
             imageView?.setImageBitmap(bitmap)
